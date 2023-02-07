@@ -18,8 +18,24 @@ import { Routes } from 'react-router-dom';
 import Kurse from '../Sites/Kurse/Dashboard';
 import KurseEdit from '../Sites/Kurse/KurseEdit';
 import KurseAdd from '../Sites/Kurse/KurseAdd';
+
 import Home from '../Sites/Home';
 
+import Dozenten from '../Sites/Dozenten/Dashboard';
+import DozentEdit from '../Sites/Dozenten/DozentenEdit';
+import DozentAdd from '../Sites/Dozenten/DozentenAdd';
+
+import Lernende from '../Sites/Lernende/Dashboard';
+import LernendeEdit from '../Sites/Lernende/LernendeEdit';
+import LernendeAdd from '../Sites/Lernende/LernendeAdd';
+
+import Lehrbetrieb from '../Sites/Lehrbetrieb/Dashboard';
+import LehrbetriebEdit from '../Sites/Lehrbetrieb/LehrbetriebEdit';
+import LehrbetriebAdd from '../Sites/Lehrbetrieb/LehrbetriebAdd';
+
+import Land from '../Sites/Land/Dashboard';
+import LandEdit from '../Sites/Land/LandEdit';
+import LandAdd from '../Sites/Land/LandAdd';
 /* Hier wird die Sidebar erstellt. Ebenso wird hier der Router für die Seiten erstellt. Alle neuen Routen müssen hier definiert werden.*/
 const Sidebar = () => {
    return (
@@ -30,32 +46,32 @@ const Sidebar = () => {
             Menu
           </a>
         </CDBSidebarHeader>
-
+        
         <CDBSidebarContent className="sidebar-content">
           <CDBSidebarMenu>
             <NavLink exact to="/" activeClassName="activeClicked">
               <CDBSidebarMenuItem icon="home">Home</CDBSidebarMenuItem>
             </NavLink>
             <NavLink exact to="/kurse" activeClassName="activeClicked">
-              <CDBSidebarMenuItem icon="columns">Kurse</CDBSidebarMenuItem>
+              <CDBSidebarMenuItem icon="th">Kurse</CDBSidebarMenuItem>
             </NavLink>
             <NavLink exact to="/lernende" activeClassName="activeClicked">
-              <CDBSidebarMenuItem icon="columns">Lernende</CDBSidebarMenuItem>
+              <CDBSidebarMenuItem icon="male">Lernende</CDBSidebarMenuItem>
             </NavLink>
-            <NavLink exact to="/lehrbetriebe" activeClassName="activeClicked">
+            <NavLink exact to="/dozenten" activeClassName="activeClicked">
+              <CDBSidebarMenuItem icon="male">Dozenten</CDBSidebarMenuItem>
+            </NavLink>
+            <NavLink exact to="/lehrbetrieb" activeClassName="activeClicked">
               <CDBSidebarMenuItem icon="columns">Lehrbetrieb</CDBSidebarMenuItem>
             </NavLink>
-            <NavLink exact to="/dozent" activeClassName="activeClicked">
-              <CDBSidebarMenuItem icon="columns">Dozenten</CDBSidebarMenuItem>
-            </NavLink>
             <NavLink exact to="/laender" activeClassName="activeClicked">
-              <CDBSidebarMenuItem icon="columns">Land</CDBSidebarMenuItem>
+              <CDBSidebarMenuItem icon="map-signs">Land</CDBSidebarMenuItem>
             </NavLink>
             <NavLink exact to="/kurs_lernende" activeClassName="activeClicked">
-              <CDBSidebarMenuItem icon="columns">Kurs_Lernende</CDBSidebarMenuItem>
+              <CDBSidebarMenuItem icon="list-ul">Kursbesuche</CDBSidebarMenuItem>
             </NavLink>
             <NavLink exact to="/lehrbetrieb_lernende" activeClassName="activeClicked">
-              <CDBSidebarMenuItem icon="columns">Lehrbetrieb_Lernende</CDBSidebarMenuItem>
+              <CDBSidebarMenuItem icon="list-ul">Lehrfirmen</CDBSidebarMenuItem>
             </NavLink>
           </CDBSidebarMenu>
         </CDBSidebarContent>
@@ -65,6 +81,23 @@ const Sidebar = () => {
          <Route exact path="/kurse" element={<Kurse />} />
          <Route path="/kurse/edit/:id" element={<KurseEdit />} />
          <Route path="/kurse/add/" element={<KurseAdd />} />
+         
+         <Route exact path="/dozenten/" element={<Dozenten />} />
+         <Route path="/dozent/edit/:id" element={<DozentEdit />} />
+         <Route path="/dozent/add/" element={<DozentAdd />} />
+
+         <Route exact path="/lernende/" element={<Lernende />} />
+         <Route path="/lernende/edit/:id" element={<LernendeEdit />} />
+         <Route path="/lernende/add/" element={<LernendeAdd />} />
+
+         <Route exact path="/lehrbetrieb/" element={<Lehrbetrieb />} />
+         <Route path="/lehrbetrieb/edit/:id" element={<LehrbetriebEdit />} />
+         <Route path="/lehrbetrieb/add/" element={<LehrbetriebAdd />} />
+
+         <Route exact path="/laender/" element={<Land />} />
+         <Route path="/laender/edit/:id" element={<LandEdit />} />
+         <Route path="/laender/add/" element={<LandAdd />} />
+
       </Routes>
     </div>
   );

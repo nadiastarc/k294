@@ -1,6 +1,6 @@
 import React from 'react';
 import BackButton from '../../Components/BackButton';
-import KurseAddForm from '../../Components/KurseAddForm';
+import KurseAddForm from '../../Components/Kurs/KurseAddForm';
 import Container from 'react-bootstrap/Container';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';

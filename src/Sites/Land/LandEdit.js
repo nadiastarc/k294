@@ -4,15 +4,15 @@ import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 
 import BackButton from '../../Components/BackButton';
-import DozentEditForm from '../../Components/Dozenten/DozentenEditForm';
+import LandEditForm from '../../Components/Land/LandEditForm';
 
 
 const DozentenEdit = () => {
   return (
         <Container>
             <Row>
-                <BackButton route="/dozenten/" />
-                <Col lg={7} className="mt-5"><DozentEditForm /></Col>
+                <BackButton route="/laender/" />
+                <Col lg={7} className="mt-5"><LandEditForm /></Col>
             </Row>
         </Container>
    );

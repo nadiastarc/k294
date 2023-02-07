@@ -4,20 +4,20 @@ import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 
 import BackButton from '../../Components/BackButton';
-import DozentEditForm from '../../Components/Dozenten/DozentenEditForm';
+import LehrbetriebEditForm from '../../Components/Lehrbetriebe/LehrbetriebeEditForm';
 
 
-const DozentenEdit = () => {
+const KurseEdit = () => {
   return (
         <Container>
             <Row>
-                <BackButton route="/dozenten/" />
-                <Col lg={7} className="mt-5"><DozentEditForm /></Col>
+                <BackButton route="/lehrbetrieb/" />
+                <Col lg={7} className="mt-5"><LehrbetriebEditForm /></Col>
             </Row>
         </Container>
    );
 };
   
-export default DozentenEdit;
+export default KurseEdit;
 
 

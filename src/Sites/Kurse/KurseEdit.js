@@ -4,7 +4,7 @@ import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 
 import BackButton from '../../Components/BackButton';
-import KurseEditForm from '../../Components/KurseEditForm';
+import KurseEditForm from '../../Components/Kurs/KurseEditForm';
 
 
 const KurseEdit = () => {

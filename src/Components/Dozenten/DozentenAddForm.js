@@ -64,7 +64,7 @@ function DozentenAddForm() {
         <div>    
         <Alert show={showSuccess} variant="success">
             <p>
-              Kurs wurde erfolgreich erstellt.
+              Dozent wurde erfolgreich erstellt.
             </p>
         </Alert>
         <Alert show={showError} variant="danger">
