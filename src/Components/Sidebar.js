@@ -36,6 +36,9 @@ import LehrbetriebAdd from '../Sites/Lehrbetrieb/LehrbetriebAdd';
 import Land from '../Sites/Land/Dashboard';
 import LandEdit from '../Sites/Land/LandEdit';
 import LandAdd from '../Sites/Land/LandAdd';
+
+import KursBesuch from '../Sites/Kursbesuche/Dashboard';
+
 /* Hier wird die Sidebar erstellt. Ebenso wird hier der Router für die Seiten erstellt. Alle neuen Routen müssen hier definiert werden.*/
 const Sidebar = () => {
    return (
@@ -67,7 +70,7 @@ const Sidebar = () => {
             <NavLink exact to="/laender" activeClassName="activeClicked">
               <CDBSidebarMenuItem icon="map-signs">Land</CDBSidebarMenuItem>
             </NavLink>
-            <NavLink exact to="/kurs_lernende" activeClassName="activeClicked">
+            <NavLink exact to="/kursbesuche" activeClassName="activeClicked">
               <CDBSidebarMenuItem icon="list-ul">Kursbesuche</CDBSidebarMenuItem>
             </NavLink>
             <NavLink exact to="/lehrbetrieb_lernende" activeClassName="activeClicked">
@@ -97,6 +100,9 @@ const Sidebar = () => {
          <Route exact path="/laender/" element={<Land />} />
          <Route path="/laender/edit/:id" element={<LandEdit />} />
          <Route path="/laender/add/" element={<LandAdd />} />
+
+         <Route exact path="/kursbesuche/" element={<KursBesuch/>} />
+
 
       </Routes>
     </div>

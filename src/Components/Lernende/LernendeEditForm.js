@@ -8,6 +8,8 @@ import Form from 'react-bootstrap/Form';
 import Button from 'react-bootstrap/Button';
 import Alert from 'react-bootstrap/Alert';
 import Spinner from 'react-bootstrap/Spinner';
+import Select from 'react-select';
+
 
 function LernendeEditForm() {
     
@@ -17,7 +19,8 @@ function LernendeEditForm() {
       
     /* State für die vorhandenen Werte der jeweiligen Felder */  
     const [loadedValues, setLoadedValues] = useState([]);  
-    
+    const [Land, setDozentValues] = useState([]);
+
     /* Input state*/  
     const [inputs, setInputs] = useState([]);
     
@@ -62,7 +65,9 @@ function LernendeEditForm() {
         handleShowSuccess(false);
         updateData();
     };
-    
+    useEffect(() => {
+        getDozent();
+    }, []);
     /* Die Daten werden an die API geschickt. Der API-Call wird asynchron ausgeführt. */
     const updateData = async () => {
         const json = JSON.stringify(inputs);
@@ -80,7 +85,29 @@ function LernendeEditForm() {
         }
         handleLoading(false);
     };
-
+    function Item(value, label) {
+        this.value = value;
+        this.label = label;
+    }
+    let options = []
+    for (let i = 0; i < Land.length; i++){
+        options.push(new Item(Land[i].id_land, [Land[i].land]))
+    }
+    const getDozent = async () => {
+        /* Fehler abfangen */
+        try{const res = await axios.get("https://nadia.dnet.ch/laender/");
+        //console.log(res);            
+        setDozentValues(res.data.data);}
+        catch(err){
+            handleShowError(true);
+        }
+    };
+    const handleChangeSelect = (selectedOptions) => {
+        console.log(selectedOptions)
+        console.log(selectedOptions.value);
+        setInputs(values => ({...values, "id_land": selectedOptions.value}))
+        // this.state.selectValue({ selectedOptions });         
+    }
     /* Rendering des Formulars */
     return (
         <div>
@@ -122,7 +149,8 @@ function LernendeEditForm() {
             </Form.Group>
             <Form.Group className="mb-3" controlId="formLernenderLand">
                 <Form.Label>Land</Form.Label>
-                <Form.Control type="number" name="nr_land" placeholder="nr_land" defaultValue={loadedValues.nr_land} onChange={handleChange}/>
+                <Select name="selectLand" options={options} isSearchable={true}  menuPlacement="top" onChange={handleChangeSelect} />
+                {/* <Form.Control type="number" name="nr_land" placeholder="nr_land" defaultValue={loadedValues.nr_land} onChange={handleChange}/> */}
             </Form.Group>
             <Form.Group className="mb-3" controlId="formLernenderGeschlecht">
                 <Form.Label>Geschlecht</Form.Label>

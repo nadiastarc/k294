@@ -7,12 +7,16 @@ import Form from 'react-bootstrap/Form';
 import Button from 'react-bootstrap/Button';
 import Alert from 'react-bootstrap/Alert';
 import Spinner from 'react-bootstrap/Spinner';
+import Select from 'react-select';
+
 
 /* Diese Funtion gibt das Formular zum hinzufügen von Einträgen zurück*/
 function KurseAddForm() {
     /* Input state*/  
     const [inputs, setInputs] = useState([]);
-    
+    const [Dozent, setDozentValues] = useState([]);
+
+
     /* Error/Success states & handler */
     const [showSuccess, setShowSuccess] = useState(false);
     const handleShowSuccess = (showValue) => setShowSuccess(showValue);
@@ -29,7 +33,9 @@ function KurseAddForm() {
         const value = event.target.value;
         setInputs(values => ({...values, [name]: value}));
     };
-
+  useEffect(() => {
+        getDozent();
+    }, []);
     /* Submit Listener */
     const handleSubmit = (event) => {
         event.preventDefault();
@@ -58,7 +64,30 @@ function KurseAddForm() {
         }
         handleLoading(false);
     };
-
+     function Item(value, label) {
+        this.value = value;
+        this.label = label;
+    }
+    let options = []
+    for (let i = 0; i < Dozent.length; i++){
+        options.push(new Item(Dozent[i].id_dozent, [Dozent[i].vorname + " " + Dozent[i].nachname]))
+    }
+    const getDozent = async () => {
+        /* Fehler abfangen */
+        try{const res = await axios.get("https://nadia.dnet.ch/dozent");
+        //console.log(res);            
+        setDozentValues(res.data.data);}
+        catch(err){
+            handleShowError(true);
+        }
+    };
+    const handleChangeSelect = (selectedOptions) => {
+        console.log("SO:");
+        console.log(selectedOptions)
+        console.log(selectedOptions.value);
+        setInputs(values => ({...values, "id_dozent": selectedOptions.value}))
+        // this.state.selectValue({ selectedOptions });         
+    }
     /* Rendering des Formulars */
     return (
         <div>    
@@ -74,10 +103,10 @@ function KurseAddForm() {
         </Alert>
         <h1>Kurs hinzufügen</h1>
         <Form className="mt-4" onSubmit={handleSubmit}>
-            <Form.Group className="mb-3" controlId="formKursNummer">
+            {/* <Form.Group className="mb-3" controlId="formKursNummer">
                 <Form.Label>Kursnummer</Form.Label>
                 <Form.Control required name="kursnummer" type="number" placeholder="Kursnummer" onChange={handleChange}/>
-            </Form.Group>
+            </Form.Group> */}
             <Form.Group className="mb-3" controlId="formKursThema">
                 <Form.Label>Kursthema</Form.Label>
                 <Form.Control required name="kursthema" type="text" placeholder="Kursthema" onChange={handleChange}/>
@@ -87,8 +116,8 @@ function KurseAddForm() {
                 <Form.Control required name="inhalt" as="textarea" rows={3} placeholder="Kursinhalt" onChange={handleChange}/>
             </Form.Group>
             <Form.Group className="mb-3" controlId="formKursDozent">
-                <Form.Label>Dozent Nr.</Form.Label>
-                <Form.Control required name="id_dozent" type="number" placeholder="Dozent Nr." onChange={handleChange}/>
+                <Form.Label>Dozent</Form.Label>
+                <Select name="selectDozent" options={options} isSearchable={true}  menuPlacement="top" onChange={handleChangeSelect} />
             </Form.Group>
             <Form.Group className="mb-3" controlId="formKursStartdatum">
                 <Form.Label>Startdatum</Form.Label>

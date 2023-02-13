@@ -1,0 +1,6 @@
+// getting kurs data where no student, and dozent
+
+SELECT * FROM `kurse_lernende` 
+JOIN kurse k ON kurse_lernende.id_kurs = k.id_kurs 
+JOIN dozenten d on k.id_dozent = d.id_dozent 
+WHERE id_lernende IS NULL;

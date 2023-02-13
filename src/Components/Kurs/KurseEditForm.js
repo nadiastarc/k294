@@ -8,6 +8,7 @@ import Form from 'react-bootstrap/Form';
 import Button from 'react-bootstrap/Button';
 import Alert from 'react-bootstrap/Alert';
 import Spinner from 'react-bootstrap/Spinner';
+import Select from 'react-select';
 
 function KurseEditForm() {
     
@@ -17,7 +18,8 @@ function KurseEditForm() {
       
     /* State für die vorhandenen Werte der jeweiligen Felder */  
     const [loadedValues, setLoadedValues] = useState([]);  
-    
+    const [Dozent, setDozentValues] = useState([]);
+
     /* Input state*/  
     const [inputs, setInputs] = useState([]);
     
@@ -34,6 +36,7 @@ function KurseEditForm() {
     /* Beim aufrufen der Seite wird die Funktion zum laden der Daten aufgerufen */
     useEffect(() => {
         getData();
+        getDozent();
     }, []);
     
     /* Hier werden die Daten des Kurses von der API geladen. Der API-Call wird asynchron ausgeführt */
@@ -80,7 +83,30 @@ function KurseEditForm() {
         }
         handleLoading(false);
     };
-
+    function Item(value, label) {
+        this.value = value;
+        this.label = label;
+    }
+    let options = []
+    for (let i = 0; i < Dozent.length; i++){
+        options.push(new Item(Dozent[i].id_dozent, [Dozent[i].vorname + " " + Dozent[i].nachname]))
+    }
+    const getDozent = async () => {
+        /* Fehler abfangen */
+        try{const res = await axios.get("https://nadia.dnet.ch/dozent");
+        //console.log(res);            
+        setDozentValues(res.data.data);}
+        catch(err){
+            handleShowError(true);
+        }
+    };
+    const handleChangeSelect = (selectedOptions) => {
+        console.log(selectedOptions)
+        console.log(selectedOptions.value);
+        setInputs(values => ({...values, "id_dozent": selectedOptions.value}))
+        // this.state.selectValue({ selectedOptions });         
+    }
+   
     /* Rendering des Formulars */
     return (
         <div>
@@ -109,8 +135,9 @@ function KurseEditForm() {
                 <Form.Control name="inhalt" as="textarea" rows={3} placeholder="Kursinhalt" defaultValue={loadedValues.inhalt} onChange={handleChange}/>
             </Form.Group>
             <Form.Group className="mb-3" controlId="formKursDozent">
-                <Form.Label>Dozent Nr.</Form.Label>
-                <Form.Control name="id_dozent" type="number" placeholder="Dozent Nr." defaultValue={loadedValues.id_dozent} onChange={handleChange}/>
+                <Form.Label>Dozent:</Form.Label>
+                <Select name="selectDozent" options={options} isSearchable={true}  menuPlacement="top" onChange={handleChangeSelect} />
+                {/* <Form.Control name="id_dozent" type="number" placeholder="Dozent Nr." defaultValue={loadedValues.id_dozent} onChange={handleChange}/> */}
             </Form.Group>
             <Form.Group className="mb-3" controlId="formKursStartdatum">
                 <Form.Label>Startdatum</Form.Label>
