@@ -15,6 +15,8 @@ function KurseAddForm() {
     /* Input state*/  
     const [inputs, setInputs] = useState([]);
     const [Dozent, setDozentValues] = useState([]);
+    const [lernendeValues, setLernendeValues] = useState([]); 
+    const [KursIdValue, setKurseValues] = useState([]);
 
 
     /* Error/Success states & handler */
@@ -35,6 +37,8 @@ function KurseAddForm() {
     };
   useEffect(() => {
         getDozent();
+        getLernende();
+        getKursID();
     }, []);
     /* Submit Listener */
     const handleSubmit = (event) => {
@@ -43,6 +47,7 @@ function KurseAddForm() {
         handleShowError(false);
         handleShowSuccess(false);
         createData();
+        addLernende();
     };
     
     /* Die Daten werden an die API geschickt. Der API-Call wird asynchron ausgeführt. */
@@ -81,13 +86,82 @@ function KurseAddForm() {
             handleShowError(true);
         }
     };
+    let optionsL = []
+    for (let i = 0; i < lernendeValues.length; i++){
+        optionsL.push(new Item(lernendeValues[i].id_lernende, [lernendeValues[i].vorname + " " + lernendeValues[i].nachname]))
+    }
+    const getLernende = async () => {
+        /* Fehler abfangen */
+        try{const res = await axios.get("https://nadia.dnet.ch/lernende");
+        //console.log(res);            
+        setLernendeValues(res.data.data);}
+        catch(err){
+            handleShowError(true);
+        }
+    };
     const handleChangeSelect = (selectedOptions) => {
         console.log("SO:");
-        console.log(selectedOptions)
+        console.log('selectedOptions1'+ selectedOptions)
         console.log(selectedOptions.value);
         setInputs(values => ({...values, "id_dozent": selectedOptions.value}))
         // this.state.selectValue({ selectedOptions });         
     }
+    let lernendeID =[];
+
+    const handleChangeLernende = (selectedOptions) => {
+        lernendeID = [];
+        for (let i = 0; i<selectedOptions.length; i++)
+        {
+            lernendeID.push(selectedOptions[i]);
+        }
+        //setInputsLernende(values => ({...values, "nr_lernende": selectedOptions.value}))
+        console.log('selectedOptions3 '+ selectedOptions);
+    };
+
+const addLernende = async () => {
+    console.log('Lernende');
+    console.log(lernendeID);
+    let kursID = KursIdValue;
+    console.log(KursIdValue);
+    console.log("AFF"+lernendeID.length);
+    for (let i = 0; i < lernendeID.length; i++)
+    {
+        console.log(lernendeID[i])
+        //console.log(inputsLernende)
+        let json = {
+            'id_kurs': Math.floor(kursID),
+            'id_lernende': Math.floor(lernendeID[i].value),
+        };
+        console.log(json)
+        /* Headers werden gesetzt */
+        const config = {
+            headers: {
+                'Content-Type': 'application/json'
+            }
+        };
+        /* Fehler abfangen */
+        try{
+            let response = await axios.post("https://nadia.dnet.ch/kurs_lernende/", json, config);
+            handleShowSuccess(true);
+        }catch(err){
+            handleShowError(true);
+        }
+        handleLoading(false);
+    }
+};
+const getKursID = async () => {
+    /* Fehler abfangen */
+    try{
+        const res = await axios.get("https://nadia.dnet.ch/kurs");
+        let ID = res.data.increment[0].AUTO_INCREMENT;
+
+        console.log(ID);
+        setKurseValues(ID)
+        return ID 
+    }catch(err){
+        handleShowError(true);
+        }
+    };
     /* Rendering des Formulars */
     return (
         <div>    
@@ -103,33 +177,38 @@ function KurseAddForm() {
         </Alert>
         <h1>Kurs hinzufügen</h1>
         <Form className="mt-4" onSubmit={handleSubmit}>
-            {/* <Form.Group className="mb-3" controlId="formKursNummer">
-                <Form.Label>Kursnummer</Form.Label>
-                <Form.Control required name="kursnummer" type="number" placeholder="Kursnummer" onChange={handleChange}/>
-            </Form.Group> */}
+        
             <Form.Group className="mb-3" controlId="formKursThema">
                 <Form.Label>Kursthema</Form.Label>
-                <Form.Control required name="kursthema" type="text" placeholder="Kursthema" onChange={handleChange}/>
+                <Form.Control  name="kursthema" type="text" placeholder="Kursthema" onChange={handleChange}/>
+            </Form.Group>
+            <Form.Group className="mb-3" controlId="formKursNummer">
+                <Form.Label>Modulnummer</Form.Label>
+                <Form.Control required name="kursnummer" type="text" placeholder="Modulnummer" onChange={handleChange}/>
             </Form.Group>
             <Form.Group className="mb-3" controlId="formKursInhalt">
                 <Form.Label>Kursinhalt</Form.Label>
-                <Form.Control required name="inhalt" as="textarea" rows={3} placeholder="Kursinhalt" onChange={handleChange}/>
+                <Form.Control name="inhalt" as="textarea" rows={3} placeholder="Kursinhalt" onChange={handleChange}/>
             </Form.Group>
             <Form.Group className="mb-3" controlId="formKursDozent">
-                <Form.Label>Dozent</Form.Label>
+                <Form.Label>Dozent</Form.Label><br></br>
                 <Select name="selectDozent" options={options} isSearchable={true}  menuPlacement="top" onChange={handleChangeSelect} />
             </Form.Group>
             <Form.Group className="mb-3" controlId="formKursStartdatum">
                 <Form.Label>Startdatum</Form.Label>
-                <Form.Control required type="date" name="startdatum" placeholder="Startdatum" onChange={handleChange}/>
+                <Form.Control type="date" name="startdatum" placeholder="Startdatum" onChange={handleChange}/>
             </Form.Group>
             <Form.Group className="mb-3" controlId="formKursEnddatum">
                 <Form.Label>Enddatum</Form.Label>
-                <Form.Control required type="date" name="enddatum" placeholder="Enddatum" onChange={handleChange}/>
+                <Form.Control type="date" name="enddatum" placeholder="Enddatum" onChange={handleChange}/>
             </Form.Group>
             <Form.Group className="mb-3" controlId="formKursDauer">
                 <Form.Label>Dauer</Form.Label>
-                <Form.Control required type="number" name="dauer" placeholder="Dauer" onChange={handleChange}/>
+                <Form.Control type="number" name="dauer" placeholder="Dauer" onChange={handleChange}/>
+            </Form.Group>
+            <Form.Group className="mb-3" controlId="formKursLernende">
+                <Form.Label>Lernende</Form.Label><br></br>
+                <Select name="selectLernende" options={optionsL} isSearchable={true} isMulti  menuPlacement="top" onChange={handleChangeLernende} />
             </Form.Group>
             <Button variant="primary" type="submit">
                 Erstellen {loading && <Spinner as="span" animation="border" size="sm" role="status" aria-hidden="true"/>}

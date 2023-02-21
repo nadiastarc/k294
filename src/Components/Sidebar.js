@@ -31,7 +31,10 @@ import LernendeAdd from '../Sites/Lernende/LernendeAdd';
 
 import Lehrbetrieb from '../Sites/Lehrbetrieb/Dashboard';
 import LehrbetriebEdit from '../Sites/Lehrbetrieb/LehrbetriebEdit';
+import ShowLernende from '../Sites/Lehrbetrieb/ShowLernende';
 import LehrbetriebAdd from '../Sites/Lehrbetrieb/LehrbetriebAdd';
+import LehrbetriebLernenderAdd from '../Sites/Lehrbetrieb/AddLernende';
+
 
 import Land from '../Sites/Land/Dashboard';
 import LandEdit from '../Sites/Land/LandEdit';
@@ -80,8 +83,8 @@ const Sidebar = () => {
         </CDBSidebarContent>
       </CDBSidebar>
       <Routes>
-         <Route exact path="/" element={<Home />} />
-         <Route exact path="/kurse" element={<Kurse />} />
+         <Route exact path="/" element={<Home />} />
+         <Route exact path="/kurse" element={<Kurse />} />
          <Route path="/kurse/edit/:id" element={<KurseEdit />} />
          <Route path="/kurse/add/" element={<KurseAdd />} />
          
@@ -94,8 +97,11 @@ const Sidebar = () => {
          <Route path="/lernende/add/" element={<LernendeAdd />} />
 
          <Route exact path="/lehrbetrieb/" element={<Lehrbetrieb />} />
-         <Route path="/lehrbetrieb/edit/:id" element={<LehrbetriebEdit />} />
+         <Route path="/lehrbetrieb/edit/:id" element={<LehrbetriebEdit />} />         
+         <Route path="/lehrbetrieb/show/:id" element={<ShowLernende />} />
          <Route path="/lehrbetrieb/add/" element={<LehrbetriebAdd />} />
+         <Route path="/lehrbetrieb/show/:id/LehrbetriebLernenderAdd" element={<LehrbetriebLernenderAdd />} />
+
 
          <Route exact path="/laender/" element={<Land />} />
          <Route path="/laender/edit/:id" element={<LandEdit />} />
@@ -104,7 +110,7 @@ const Sidebar = () => {
          <Route exact path="/kursbesuche/" element={<KursBesuch/>} />
 
 
-      </Routes>
+      </Routes>
     </div>
   );
 };
